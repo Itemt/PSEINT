@@ -13,6 +13,7 @@ import { Lexer } from './interpreter/lexer';
 import { Parser } from './interpreter/parser';
 import { Interpreter } from './interpreter/interpreter';
 import { evaluateCodeAgainstExercise } from './interpreter/evaluator';
+import { saveSubmissionDirectly } from './services/turso';
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -164,7 +165,7 @@ export default function App() {
     const res = await evaluateCodeAgainstExercise(code, currentEx);
     setEvalResult(res);
 
-    // Record submission payload
+    // Save directly to Turso DB and LocalStorage
     const submissionPayload = {
       id: Date.now().toString(),
       studentName: selectedStudent || 'Anónimo',
@@ -179,26 +180,7 @@ export default function App() {
       createdAt: new Date().toISOString()
     };
 
-    // Save to LocalStorage Fallback
-    try {
-      const existingStr = localStorage.getItem('pseint_exam_submissions');
-      const existing = existingStr ? JSON.parse(existingStr) : [];
-      existing.unshift(submissionPayload);
-      localStorage.setItem('pseint_exam_submissions', JSON.stringify(existing.slice(0, 100)));
-    } catch (err) {
-      console.warn('Error al guardar en localStorage:', err);
-    }
-
-    // Save to Turso API
-    try {
-      await fetch('/api/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(submissionPayload)
-      });
-    } catch (err) {
-      console.warn('API /api/submit no disponible localmente, guardado en fallback:', err);
-    }
+    await saveSubmissionDirectly(submissionPayload);
   };
 
   const handleStop = () => {

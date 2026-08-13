@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { fetchSubmissionsDirectly } from '../../services/turso';
 
 export function AdminPanel({ isOpen, onClose }) {
   const [pinInput, setPinInput] = useState('');
@@ -14,7 +15,7 @@ export function AdminPanel({ isOpen, onClose }) {
 
   useEffect(() => {
     if (isOpen && isAuthenticated) {
-      fetchSubmissions();
+      loadSubmissions();
     }
   }, [isOpen, isAuthenticated, selectedGrade]);
 
@@ -28,54 +29,16 @@ export function AdminPanel({ isOpen, onClose }) {
     }
   };
 
-  const fetchSubmissions = async () => {
+  const loadSubmissions = async () => {
     setLoading(true);
     try {
-      // 1. Fetch from Turso API if available
-      const url = selectedGrade === 'Todos' ? '/api/submissions' : `/api/submissions?grade=${encodeURIComponent(selectedGrade)}`;
-      const res = await fetch(url);
-      if (res.ok) {
-        const data = await res.json();
-        let apiResults = data.submissions || [];
-
-        // 2. Combine with local storage submissions if any
-        const localDataStr = localStorage.getItem('pseint_exam_submissions');
-        let localResults = localDataStr ? JSON.parse(localDataStr) : [];
-        if (selectedGrade !== 'Todos') {
-          localResults = localResults.filter(s => s.grade === selectedGrade);
-        }
-
-        // Merge without duplicates (by timestamp or id)
-        const combined = [...apiResults];
-        for (const loc of localResults) {
-          if (!combined.some(c => c.studentName === loc.studentName && c.exerciseId === loc.exerciseId && c.createdAt === loc.createdAt)) {
-            combined.push(loc);
-          }
-        }
-
-        // Sort by timestamp desc
-        combined.sort((a, b) => new Date(b.createdAt || Date.now()) - new Date(a.createdAt || Date.now()));
-        setSubmissions(combined);
-      } else {
-        // Fallback to local storage
-        loadLocalSubmissions();
-      }
+      const data = await fetchSubmissionsDirectly(selectedGrade);
+      setSubmissions(data);
     } catch (err) {
-      console.warn('Servidor API no disponible. Cargando respuestas locales:', err);
-      loadLocalSubmissions();
+      console.error('Error al cargar respuestas:', err);
     } finally {
       setLoading(false);
     }
-  };
-
-  const loadLocalSubmissions = () => {
-    const localDataStr = localStorage.getItem('pseint_exam_submissions');
-    let localResults = localDataStr ? JSON.parse(localDataStr) : [];
-    if (selectedGrade !== 'Todos') {
-      localResults = localResults.filter(s => s.grade === selectedGrade);
-    }
-    localResults.sort((a, b) => new Date(b.createdAt || Date.now()) - new Date(a.createdAt || Date.now()));
-    setSubmissions(localResults);
   };
 
   const copyToClipboard = (text) => {
@@ -127,10 +90,10 @@ export function AdminPanel({ isOpen, onClose }) {
             <span style={{ fontSize: '24px' }}>🛡️</span>
             <div>
               <h2 style={{ margin: 0, fontSize: '18px', fontWeight: '600', color: '#f8fafc' }}>
-                Panel de Administración de Exámenes
+                Panel de Administración de Exámenes (Turso DB Directo)
               </h2>
               <p style={{ margin: 0, fontSize: '12px', color: '#94a3b8' }}>
-                Respuestas registradas en tiempo real por grado
+                Respuestas en tiempo real guardadas en la base de datos
               </p>
             </div>
           </div>
@@ -241,7 +204,7 @@ export function AdminPanel({ isOpen, onClose }) {
               </div>
 
               <button
-                onClick={fetchSubmissions}
+                onClick={loadSubmissions}
                 style={{
                   padding: '6px 12px',
                   borderRadius: '6px',
@@ -270,7 +233,7 @@ export function AdminPanel({ isOpen, onClose }) {
               }}>
                 {loading ? (
                   <div style={{ textAlign: 'center', padding: '40px', color: '#94a3b8' }}>
-                    Cargando respuestas...
+                    Cargando respuestas desde Turso DB...
                   </div>
                 ) : submissions.length === 0 ? (
                   <div style={{ textAlign: 'center', padding: '40px', color: '#94a3b8' }}>
