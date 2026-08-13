@@ -29,7 +29,7 @@ export function AdminPanel({ isOpen, onClose }) {
       setIsAuthenticated(true);
       setAuthError('');
     } else {
-      setAuthError('PIN incorrecto. Intenta con: admin123');
+      setAuthError('PIN incorrecto. Intenta de nuevo.');
     }
   };
 
@@ -129,7 +129,7 @@ export function AdminPanel({ isOpen, onClose }) {
             <form onSubmit={handleLogin}>
               <input
                 type="password"
-                placeholder="PIN (admin123)"
+                placeholder="Ingrese PIN de acceso"
                 value={pinInput}
                 onChange={(e) => setPinInput(e.target.value)}
                 style={{
