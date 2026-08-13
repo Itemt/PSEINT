@@ -1,0 +1,512 @@
+/* PSeInt Web Desktop Theme CSS */
+:root {
+  --pseint-blue-dark: #1b365d;
+  --pseint-blue-header: #244b7a;
+  --pseint-blue-mid: #2c598d;
+  --pseint-blue-light: #eaf2fb;
+  --pseint-blue-hover: #3b6ea5;
+  --pseint-border: #b8c7d9;
+  --pseint-bg-gray: #f4f6f9;
+  --pseint-editor-bg: #ffffff;
+  --pseint-gutter-bg: #eef2f7;
+  --pseint-gutter-text: #7b8a9b;
+  --pseint-console-bg: #0f172a;
+  --pseint-console-text: #f1f5f9;
+  --pseint-console-prompt: #f59e0b;
+  --pseint-console-success: #10b981;
+  --pseint-console-error: #ef4444;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--pseint-bg-gray);
+  color: #1e293b;
+}
+
+/* App Container */
+.pseint-app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* Top Navigation Bar */
+.pseint-navbar {
+  background-color: var(--pseint-blue-dark);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 2px solid #0f2341;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  width: 100%;
+}
+
+.pseint-title-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 16px;
+  background-color: var(--pseint-blue-header);
+  width: 100%;
+}
+
+.pseint-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 1.02rem;
+}
+
+.pseint-icon-badge {
+  background-color: #3b82f6;
+  color: white;
+  font-weight: 900;
+  font-size: 0.8rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+
+.pseint-menu-bar {
+  display: flex;
+  gap: 2px;
+  background-color: var(--pseint-blue-dark);
+  padding: 2px 8px;
+  font-size: 0.85rem;
+  width: 100%;
+}
+
+.pseint-menu-item {
+  padding: 4px 10px;
+  color: #dbeade;
+  cursor: pointer;
+  border-radius: 3px;
+  user-select: none;
+  transition: background 0.15s;
+}
+
+.pseint-menu-item:hover {
+  background-color: var(--pseint-blue-mid);
+  color: white;
+}
+
+/* Student & Exam Header */
+.student-header-bar {
+  background: linear-gradient(90deg, #1e3a8a 0%, #2563eb 100%);
+  color: white;
+  padding: 6px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #1d4ed8;
+  font-size: 0.88rem;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.student-selector-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.student-selector-group select {
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #93c5fd;
+  background-color: #ffffff;
+  color: #1e293b;
+  font-size: 0.85rem;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+}
+
+.student-active-badge {
+  font-size: 0.82rem;
+  background: rgba(255, 255, 255, 0.18);
+  padding: 4px 12px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Exam 2-Exercise Tabs Banner */
+.exam-banner-bar {
+  background-color: #f1f5f9;
+  border-bottom: 1px solid var(--pseint-border);
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+}
+
+.exam-tabs-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.exam-tab-btn {
+  padding: 6px 14px;
+  border-radius: 6px 6px 0 0;
+  border: 1px solid #cbd5e1;
+  background-color: #e2e8f0;
+  color: #475569;
+  font-size: 0.83rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.exam-tab-btn.active {
+  background-color: #ffffff;
+  color: #1d4ed8;
+  border-color: #3b82f6;
+  border-bottom: 2px solid #2563eb;
+  box-shadow: 0 -2px 4px rgba(0,0,0,0.04);
+}
+
+.exam-problem-box {
+  background-color: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin: 6px 12px 0 12px;
+  font-size: 0.83rem;
+  color: #1e3a8a;
+}
+
+/* Main Workspace Grid */
+.pseint-workspace {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* Sidebar Command Panel */
+.pseint-sidebar {
+  width: 220px;
+  min-width: 220px;
+  background-color: #f8fafc;
+  border-right: 1px solid var(--pseint-border);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  user-select: none;
+}
+
+.sidebar-section-title {
+  font-weight: 700;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #475569;
+  padding: 8px 12px 4px 12px;
+  background-color: #e2e8f0;
+  border-bottom: 1px solid #cbd5e1;
+}
+
+.sidebar-btn-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+}
+
+.pseint-cmd-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  background: white;
+  border: 1px solid #cbd5e1;
+  border-radius: 5px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #1e293b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.pseint-cmd-btn:hover {
+  background-color: #eff6ff;
+  border-color: #3b82f6;
+  color: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.pseint-cmd-btn .cmd-tag {
+  background-color: #dbeafe;
+  color: #1e40af;
+  font-size: 0.72rem;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-family: monospace;
+}
+
+.op-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  padding: 8px;
+}
+
+.op-btn {
+  padding: 6px;
+  background: white;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  font-family: 'Consolas', monospace;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.op-btn:hover {
+  background-color: #3b82f6;
+  color: white;
+  border-color: #2563eb;
+}
+
+/* Center Editor Area */
+.pseint-main-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: #ffffff;
+  min-width: 0;
+}
+
+/* Main Editor Action Toolbar */
+.editor-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  background-color: #f1f5f9;
+  border-bottom: 1px solid var(--pseint-border);
+  width: 100%;
+}
+
+.toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tb-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 4px;
+  border: 1px solid #cbd5e1;
+  background: white;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.tb-btn:hover {
+  background-color: #e2e8f0;
+}
+
+.tb-btn-primary {
+  background-color: #16a34a;
+  color: white;
+  border-color: #15803d;
+}
+
+.tb-btn-primary:hover {
+  background-color: #15803d;
+}
+
+.tb-btn-stop {
+  background-color: #dc2626;
+  color: white;
+  border-color: #b91c1c;
+}
+
+.tb-btn-stop:hover {
+  background-color: #b91c1c;
+}
+
+/* Code Editor Wrapper */
+.editor-container {
+  flex: 1;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Consolas', 'Courier New', Courier, monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  width: 100%;
+}
+
+.line-numbers {
+  width: 48px;
+  min-width: 48px;
+  background-color: var(--pseint-gutter-bg);
+  border-right: 1px solid var(--pseint-border);
+  color: var(--pseint-gutter-text);
+  text-align: right;
+  padding: 10px 8px 10px 0;
+  user-select: none;
+  font-family: monospace;
+  overflow: hidden;
+}
+
+.editor-textarea-wrapper {
+  flex: 1;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  min-width: 0;
+}
+
+.code-textarea {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  resize: none;
+  padding: 10px;
+  font-family: 'Consolas', 'Courier New', Courier, monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #0f172a;
+  background-color: transparent;
+  white-space: pre;
+  overflow-x: auto;
+  tab-size: 4;
+}
+
+/* Bottom Execution Console */
+.pseint-console-panel {
+  height: 210px;
+  min-height: 180px;
+  background-color: var(--pseint-console-bg);
+  border-top: 2px solid #334155;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.console-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 12px;
+  background-color: #1e293b;
+  border-bottom: 1px solid #334155;
+  color: #94a3b8;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.console-body {
+  flex: 1;
+  padding: 10px 14px;
+  overflow-y: auto;
+  font-family: 'Consolas', 'Courier New', Courier, monospace;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--pseint-console-text);
+}
+
+.console-line {
+  margin-bottom: 2px;
+  word-break: break-word;
+}
+
+.console-line.system-start {
+  color: #38bdf8;
+  font-weight: 700;
+}
+
+.console-line.system-end {
+  color: #38bdf8;
+  font-weight: 700;
+}
+
+.console-line.user-input {
+  color: var(--pseint-console-prompt);
+  font-weight: bold;
+}
+
+.console-line.error {
+  color: var(--pseint-console-error);
+  font-weight: bold;
+}
+
+.console-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  padding: 4px 8px;
+  background-color: #1e293b;
+  border-radius: 4px;
+}
+
+.console-prompt-symbol {
+  color: var(--pseint-console-prompt);
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.console-input-field {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--pseint-console-prompt);
+  font-family: 'Consolas', monospace;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.console-submit-btn {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 3px 10px;
+  border-radius: 3px;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.console-submit-btn:hover {
+  background-color: #1d4ed8;
+}
