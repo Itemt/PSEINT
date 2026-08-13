@@ -61,8 +61,31 @@ export default function App() {
     setIsLoggedIn(true);
   };
 
-  const handleNextStep = () => {
-    // Save current step code
+  const handleNextStep = async () => {
+    // Automatically save and send current exercise solution to Turso DB
+    const currentEx = assignedExercises[currentStep - 1];
+    if (currentEx && code) {
+      try {
+        const res = await evaluateCodeAgainstExercise(code, currentEx);
+        const submissionPayload = {
+          id: Date.now().toString(),
+          studentName: selectedStudent || 'Anónimo',
+          grade: selectedGrade || '6A',
+          exerciseId: currentEx.id,
+          exerciseTitle: currentEx.title,
+          code: code,
+          results: res.results || [],
+          allPassed: res.success,
+          passedCount: res.passedCount || 0,
+          totalTests: res.totalTests || 0,
+          createdAt: new Date().toISOString()
+        };
+        await saveSubmissionDirectly(submissionPayload);
+      } catch (err) {
+        console.warn('Error al guardar al avanzar de paso:', err);
+      }
+    }
+
     const updatedSolutions = { ...solutions, [currentStep]: code };
     setSolutions(updatedSolutions);
 
