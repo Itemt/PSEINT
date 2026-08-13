@@ -56,6 +56,32 @@ export async function initTursoTable() {
   }
 }
 
+export function formatUTC5Date(dateString) {
+  if (!dateString) return 'Reciente';
+  try {
+    let formattedStr = String(dateString).trim();
+    // Convert SQLite standard format YYYY-MM-DD HH:MM:SS to ISO UTC format YYYY-MM-DDTHH:MM:SSZ
+    if (/^\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}$/.test(formattedStr)) {
+      formattedStr = formattedStr.replace(' ', 'T') + 'Z';
+    }
+    const date = new Date(formattedStr);
+    if (isNaN(date.getTime())) return String(dateString);
+
+    return new Intl.DateTimeFormat('es-CO', {
+      timeZone: 'America/Bogota', // UTC-5 (Colombia)
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true
+    }).format(date);
+  } catch (err) {
+    return String(dateString);
+  }
+}
+
 export async function saveSubmissionDirectly(payload) {
   const { studentName, grade, exerciseId, exerciseTitle, code, results, allPassed, passedCount, totalTests } = payload;
 
@@ -95,7 +121,7 @@ export async function saveSubmissionDirectly(payload) {
         totalTests || 0
       ]
     });
-    console.log('✅ Entrega registrada directamente en Turso DB (movers-exam-itemt).');
+    console.log('✅ Entrega registrada directamente en Turso DB.');
     return true;
   } catch (err) {
     console.error('Error al guardar entrega directamente en Turso DB:', err);
@@ -151,7 +177,7 @@ export async function fetchSubmissionsDirectly(filterGrade = 'Todos') {
 
     const merged = [...dbSubmissions];
     for (const loc of localResults) {
-      if (!merged.some(m => m.studentName === loc.studentName && m.exerciseId === loc.exerciseId && m.createdAt === loc.createdAt)) {
+      if (!merged.some(m => (m.id && m.id === loc.id) || (m.studentName === loc.studentName && m.exerciseId === loc.exerciseId && m.createdAt === loc.createdAt))) {
         merged.push(loc);
       }
     }
@@ -166,5 +192,78 @@ export async function fetchSubmissionsDirectly(filterGrade = 'Todos') {
       localResults = localResults.filter(s => s.grade === filterGrade);
     }
     return localResults;
+  }
+}
+
+export async function deleteSubmissionDirectly(id, studentName, exerciseId) {
+  // 1. Eliminar de LocalStorage
+  try {
+    const localDataStr = localStorage.getItem('pseint_exam_submissions');
+    if (localDataStr) {
+      let localResults = JSON.parse(localDataStr);
+      localResults = localResults.filter(item => {
+        if (id && item.id === id) return false;
+        if (studentName && exerciseId && item.studentName === studentName && item.exerciseId === exerciseId) return false;
+        return true;
+      });
+      localStorage.setItem('pseint_exam_submissions', JSON.stringify(localResults));
+    }
+  } catch (err) {
+    console.warn('Error al borrar de localStorage:', err);
+  }
+
+  // 2. Eliminar de Turso DB
+  const db = getTursoClient();
+  if (!db) return true;
+
+  try {
+    await initTursoTable();
+    if (id) {
+      await db.execute({
+        sql: `DELETE FROM pseint_submissions WHERE id = ?`,
+        args: [id]
+      });
+    } else if (studentName && exerciseId) {
+      await db.execute({
+        sql: `DELETE FROM pseint_submissions WHERE student_name = ? AND exercise_id = ?`,
+        args: [studentName, exerciseId]
+      });
+    }
+    console.log('🗑️ Entrega eliminada de Turso DB.');
+    return true;
+  } catch (err) {
+    console.error('Error al borrar entrega de Turso DB:', err);
+    return false;
+  }
+}
+
+export async function deleteStudentSubmissionsDirectly(studentName) {
+  // 1. Eliminar de LocalStorage
+  try {
+    const localDataStr = localStorage.getItem('pseint_exam_submissions');
+    if (localDataStr) {
+      let localResults = JSON.parse(localDataStr);
+      localResults = localResults.filter(item => item.studentName !== studentName);
+      localStorage.setItem('pseint_exam_submissions', JSON.stringify(localResults));
+    }
+  } catch (err) {
+    console.warn('Error al borrar estudiante de localStorage:', err);
+  }
+
+  // 2. Eliminar de Turso DB
+  const db = getTursoClient();
+  if (!db) return true;
+
+  try {
+    await initTursoTable();
+    await db.execute({
+      sql: `DELETE FROM pseint_submissions WHERE student_name = ?`,
+      args: [studentName]
+    });
+    console.log(`🗑️ Todas las entregas de ${studentName} fueron eliminadas de Turso DB.`);
+    return true;
+  } catch (err) {
+    console.error(`Error al borrar entregas de ${studentName} en Turso DB:`, err);
+    return false;
   }
 }
