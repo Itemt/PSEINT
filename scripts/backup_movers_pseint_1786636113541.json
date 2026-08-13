@@ -1,0 +1,286 @@
+{
+  "timestamp": "2026-08-13T15:48:32.169Z",
+  "database": "movers-exam-itemt",
+  "pseint_submissions": [
+    {
+      "id": 2,
+      "student_name": "Fonseca Granados Jerónimo",
+      "grade": "6B",
+      "exercise_id": "ex-2",
+      "exercise_title": "Cobro de Parqueadero de Centro Comercial",
+      "code": "Algoritmo CobroParqueadero\n\n    PRUEBA\n\nFinAlgoritmo",
+      "results": "[]",
+      "all_passed": 0,
+      "passed_count": 0,
+      "total_tests": 0,
+      "created_at": "2026-08-13 15:43:30"
+    },
+    {
+      "id": 3,
+      "student_name": "Fonseca Granados Jerónimo",
+      "grade": "6B",
+      "exercise_id": "ex-5",
+      "exercise_title": "Saldo Disponible en la Tarjeta de la Cafetería",
+      "code": "Algoritmo SaldoCafeteria\n\n    PRUEBA\n\nFinAlgoritmo",
+      "results": "[]",
+      "all_passed": 0,
+      "passed_count": 0,
+      "total_tests": 0,
+      "created_at": "2026-08-13 15:43:36"
+    }
+  ],
+  "pseint_students": [
+    {
+      "id": 1,
+      "name": "Álvarez Julio Thiago",
+      "grade": "6A",
+      "created_at": "2026-08-13 15:34:33"
+    },
+    {
+      "id": 2,
+      "name": "Angarita Rey Álvaro Andrés",
+      "grade": "6A",
+      "created_at": "2026-08-13 15:34:33"
+    },
+    {
+      "id": 3,
+      "name": "Cardona Marín Matías Andrés",
+      "grade": "6A",
+      "created_at": "2026-08-13 15:34:33"
+    },
+    {
+      "id": 4,
+      "name": "Díaz Díaz Hefzibá",
+      "grade": "6A",
+      "created_at": "2026-08-13 15:34:33"
+    },
+    {
+      "id": 5,
+      "name": "Gutiérrez Lobo Camila Andrea",
+      "grade": "6A",
+      "created_at": "2026-08-13 15:34:33"
+    },
+    {
+      "id": 6,
+      "name": "Hernández Gómez Jerónimo",
+      "grade": "6A",
+      "created_at": "2026-08-13 15:34:33"
+    },
+    {
+      "id": 7,
+      "name": "Londoño Guzmán Ana María",
+      "grade": "6A",
+      "created_at": "2026-08-13 15:34:33"
+    },
+    {
+      "id": 8,
+      "name": "Meza Mercado Juan Diego",
+      "grade": "6A",
+      "created_at": "2026-08-13 15:34:34"
+    },
+    {
+      "id": 9,
+      "name": "Montoya González Juan David",
+      "grade": "6A",
+      "created_at": "2026-08-13 15:34:34"
+    },
+    {
+      "id": 10,
+      "name": "Morales Villamizar Sarai Lisset",
+      "grade": "6A",
+      "created_at": "2026-08-13 15:34:34"
+    },
+    {
+      "id": 11,
+      "name": "Ortiz Comas Gabriela Sofía",
+      "grade": "6A",
+      "created_at": "2026-08-13 15:34:34"
+    },
+    {
+      "id": 12,
+      "name": "Patiño Peña Valery Michell",
+      "grade": "6A",
+      "created_at": "2026-08-13 15:34:34"
+    },
+    {
+      "id": 13,
+      "name": "Pérez Gayón Camilo",
+      "grade": "6A",
+      "created_at": "2026-08-13 15:34:34"
+    },
+    {
+      "id": 14,
+      "name": "Poblado Pallares María José",
+      "grade": "6A",
+      "created_at": "2026-08-13 15:34:34"
+    },
+    {
+      "id": 15,
+      "name": "Pulido Martínez Manuel José",
+      "grade": "6A",
+      "created_at": "2026-08-13 15:34:34"
+    },
+    {
+      "id": 16,
+      "name": "Quintero Chalarca Santiago",
+      "grade": "6A",
+      "created_at": "2026-08-13 15:34:34"
+    },
+    {
+      "id": 17,
+      "name": "Rincón Tarazona Mariana",
+      "grade": "6A",
+      "created_at": "2026-08-13 15:34:34"
+    },
+    {
+      "id": 18,
+      "name": "Ruiz Benavides Samuel Esteban",
+      "grade": "6A",
+      "created_at": "2026-08-13 15:34:35"
+    },
+    {
+      "id": 19,
+      "name": "Salom Marconi Isabella",
+      "grade": "6A",
+      "created_at": "2026-08-13 15:34:35"
+    },
+    {
+      "id": 20,
+      "name": "Suárez Barón Juliana",
+      "grade": "6A",
+      "created_at": "2026-08-13 15:34:35"
+    },
+    {
+      "id": 21,
+      "name": "Taboada Rivera María Sofía",
+      "grade": "6A",
+      "created_at": "2026-08-13 15:34:35"
+    },
+    {
+      "id": 22,
+      "name": "Urzola Salom Samuel Fernando",
+      "grade": "6A",
+      "created_at": "2026-08-13 15:34:35"
+    },
+    {
+      "id": 23,
+      "name": "Ávila Silva Miguel Ángel",
+      "grade": "6B",
+      "created_at": "2026-08-13 15:34:35"
+    },
+    {
+      "id": 24,
+      "name": "Correa Arias Esteban David",
+      "grade": "6B",
+      "created_at": "2026-08-13 15:34:35"
+    },
+    {
+      "id": 25,
+      "name": "Cristancho Martínez Izza Ninel",
+      "grade": "6B",
+      "created_at": "2026-08-13 15:34:35"
+    },
+    {
+      "id": 26,
+      "name": "Fonseca Granados Jerónimo",
+      "grade": "6B",
+      "created_at": "2026-08-13 15:34:35"
+    },
+    {
+      "id": 27,
+      "name": "Guevara Carreño Loren Victoria",
+      "grade": "6B",
+      "created_at": "2026-08-13 15:34:36"
+    },
+    {
+      "id": 28,
+      "name": "Lozano Velásquez Emilia",
+      "grade": "6B",
+      "created_at": "2026-08-13 15:34:36"
+    },
+    {
+      "id": 29,
+      "name": "Martínez Gélvez Mariana",
+      "grade": "6B",
+      "created_at": "2026-08-13 15:34:36"
+    },
+    {
+      "id": 30,
+      "name": "Meléndez Anaya Thomás Andrés",
+      "grade": "6B",
+      "created_at": "2026-08-13 15:34:36"
+    },
+    {
+      "id": 31,
+      "name": "Meza Viloria Juan José",
+      "grade": "6B",
+      "created_at": "2026-08-13 15:34:36"
+    },
+    {
+      "id": 32,
+      "name": "Muñoz Morales Lauren Alejandra",
+      "grade": "6B",
+      "created_at": "2026-08-13 15:34:36"
+    },
+    {
+      "id": 33,
+      "name": "Ortiz Rodríguez Ari Daniel",
+      "grade": "6B",
+      "created_at": "2026-08-13 15:34:36"
+    },
+    {
+      "id": 34,
+      "name": "Pérez Bermeo Giselle",
+      "grade": "6B",
+      "created_at": "2026-08-13 15:34:36"
+    },
+    {
+      "id": 35,
+      "name": "Pontón Sánchez Juan Diego",
+      "grade": "6B",
+      "created_at": "2026-08-13 15:34:36"
+    },
+    {
+      "id": 36,
+      "name": "Posada Arévalo Sofía",
+      "grade": "6B",
+      "created_at": "2026-08-13 15:34:37"
+    },
+    {
+      "id": 37,
+      "name": "Rojas Quintero Emmanuel",
+      "grade": "6B",
+      "created_at": "2026-08-13 15:34:37"
+    },
+    {
+      "id": 38,
+      "name": "Sánchez Noguera Rudin Daniel",
+      "grade": "6B",
+      "created_at": "2026-08-13 15:34:37"
+    },
+    {
+      "id": 39,
+      "name": "Silva Cubides Santiago",
+      "grade": "6B",
+      "created_at": "2026-08-13 15:34:37"
+    },
+    {
+      "id": 40,
+      "name": "Vanegas Quintana Salomé",
+      "grade": "6B",
+      "created_at": "2026-08-13 15:34:37"
+    },
+    {
+      "id": 41,
+      "name": "Velandia Meneses Matías",
+      "grade": "6B",
+      "created_at": "2026-08-13 15:34:37"
+    },
+    {
+      "id": 42,
+      "name": "Zárate Mercado Valeria",
+      "grade": "6B",
+      "created_at": "2026-08-13 15:34:37"
+    }
+  ]
+}

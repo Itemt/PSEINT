@@ -2,16 +2,16 @@ import { createClient } from '@libsql/client/web';
 
 // Function to convert libsql:// scheme to https:// scheme for web browser client
 function getFormattedTursoUrl(rawUrl) {
-  const url = rawUrl || "https://movers-exam-itemt.aws-us-east-1.turso.io";
+  const url = rawUrl || "https://pseint-exam-itemt.aws-us-east-1.turso.io";
   if (url.startsWith('libsql://')) {
     return url.replace('libsql://', 'https://');
   }
   return url;
 }
 
-const rawUrl = import.meta.env.VITE_TURSO_DATABASE_URL || "https://movers-exam-itemt.aws-us-east-1.turso.io";
+const rawUrl = import.meta.env.VITE_TURSO_DATABASE_URL || "https://pseint-exam-itemt.aws-us-east-1.turso.io";
 const TURSO_URL = getFormattedTursoUrl(rawUrl);
-const TURSO_TOKEN = import.meta.env.VITE_TURSO_AUTH_TOKEN || "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3ODYzNzU3MDIsImlkIjoiMDE5ZmVjNDgtYzEwMS03YTJkLWJmOTYtOTVlMDk4NWY4ODg0Iiwia2lkIjoidkNadHFCTjZpbnF5dFZiS0F1NW5ndnlTdUZjS3ZzMElFYjJJeHRZTXNFVSIsInJpZCI6ImUyNmNhMTMzLTI1ZGMtNDdjZS1hMGRmLTMwMTFiZDhhYWNlYSJ9.jIL2vxUGccRbkTTDnavQTZ4E-pgocobXFWYssyuHqC3ImjuumB80T4rrxqw5il31ezMTRrXDwcbr7WUN_CeqDg";
+const TURSO_TOKEN = import.meta.env.VITE_TURSO_AUTH_TOKEN || "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3ODY2MzYyNTEsImlkIjoiMDE5ZmZiY2UtYjcwMS03OWVjLWJkNTktNjdiM2E2NTQ0ZTIwIiwia2lkIjoidkNadHFCTjZpbnF5dFZiS0F1NW5ndnlTdUZjS3ZzMElFYjJJeHRZTXNFVSIsInJpZCI6ImY5OTkyNWQ4LTk5NmQtNDY5NC1iOTc3LTVhNWQ1OGQ0N2MwZCJ9.zQIgN-SBLvxEcyvkha3DfCCexPZIye2-0U3wqZWwEj7OC_c3ZzB2S-_LR28ZsaIQDHg0djF6FDF4vMIicONIDw";
 
 let client = null;
 let isInitialized = false;
@@ -110,7 +110,7 @@ export async function saveSubmissionDirectly(payload) {
     console.warn('Error al guardar respaldo local:', err);
   }
 
-  // 2. Guardar directamente a la base de datos Turso (reemplazando cualquier intento previo del mismo ejercicio)
+  // 2. Guardar directamente a la base de datos Turso (pseint-exam-itemt)
   const db = getTursoClient();
   if (!db) return false;
 
@@ -140,7 +140,7 @@ export async function saveSubmissionDirectly(payload) {
         totalTests || 0
       ]
     });
-    console.log('✅ Entrega única registrada/actualizada en Turso DB.');
+    console.log('✅ Entrega registrada correctamente en Turso DB (pseint-exam-itemt).');
     return true;
   } catch (err) {
     console.error('Error al guardar entrega en Turso DB:', err);
