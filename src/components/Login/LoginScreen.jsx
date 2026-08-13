@@ -3,40 +3,19 @@ import { STUDENTS_6A, STUDENTS_6B } from '../../models/Student.js';
 
 export function LoginScreen({ onStartExam, onOpenAdmin }) {
   const [selectedGrade, setSelectedGrade] = useState('6A');
-  const [customStudent, setCustomStudent] = useState('');
-  const [isCustomStudent, setIsCustomStudent] = useState(false);
-  const currentList = selectedGrade === '6A' ? STUDENTS_6A : selectedGrade === '6B' ? STUDENTS_6B : [];
+  const currentList = selectedGrade === '6A' ? STUDENTS_6A : STUDENTS_6B;
   const [selectedStudent, setSelectedStudent] = useState(currentList[0] || '');
-
-  const GRADES_OPTIONS = [
-    { label: 'Grado 6°A', value: '6A' },
-    { label: 'Grado 6°B', value: '6B' },
-    { label: 'Grado 7°', value: '7°' },
-    { label: 'Grado 8°', value: '8°' },
-    { label: 'Grado 9°', value: '9°' },
-    { label: 'Grado 10°', value: '10°' },
-    { label: 'Grado 11°', value: '11°' }
-  ];
 
   const handleGradeChange = (grade) => {
     setSelectedGrade(grade);
-    if (grade === '6A') {
-      setIsCustomStudent(false);
-      setSelectedStudent(STUDENTS_6A[0]);
-    } else if (grade === '6B') {
-      setIsCustomStudent(false);
-      setSelectedStudent(STUDENTS_6B[0]);
-    } else {
-      setIsCustomStudent(true);
-      setSelectedStudent('');
-    }
+    const newList = grade === '6A' ? STUDENTS_6A : STUDENTS_6B;
+    setSelectedStudent(newList[0] || '');
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const finalName = isCustomStudent ? customStudent.trim() : selectedStudent;
-    if (finalName) {
-      onStartExam(selectedGrade, finalName);
+    if (selectedStudent) {
+      onStartExam(selectedGrade, selectedStudent);
     }
   };
 
@@ -56,7 +35,7 @@ export function LoginScreen({ onStartExam, onOpenAdmin }) {
         boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
         padding: '36px 40px',
         width: '100%',
-        maxWidth: 500,
+        maxWidth: 480,
         textAlign: 'center',
         position: 'relative'
       }}>
@@ -102,25 +81,67 @@ export function LoginScreen({ onStartExam, onOpenAdmin }) {
         <h1 style={{ color: '#1e293b', fontSize: '1.5rem', marginBottom: 6, fontWeight: 800 }}>
           Plataforma de Examen PSeInt
         </h1>
-        <p style={{ color: '#64748b', fontSize: '0.9rem', marginBottom: 24 }}>
-          Evaluación Escolar de Programación
+        <p style={{ color: '#64748b', fontSize: '0.9rem', marginBottom: 28 }}>
+          Evaluación Escolar de Programación — Grado 6°
         </p>
 
         {/* Login Form */}
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
           <div style={{ textAlign: 'left' }}>
             <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#334155', marginBottom: 6 }}>
-              1. Selecciona tu Curso / Grado:
+              1. Selecciona tu Curso:
+            </label>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+              <button
+                type="button"
+                onClick={() => handleGradeChange('6A')}
+                style={{
+                  padding: '12px',
+                  borderRadius: 8,
+                  border: '2px solid',
+                  borderColor: selectedGrade === '6A' ? '#2563eb' : '#cbd5e1',
+                  background: selectedGrade === '6A' ? '#eff6ff' : '#ffffff',
+                  color: selectedGrade === '6A' ? '#1d4ed8' : '#475569',
+                  fontWeight: 700,
+                  fontSize: '0.95rem',
+                  cursor: 'pointer'
+                }}
+              >
+                Grado 6°A
+              </button>
+              <button
+                type="button"
+                onClick={() => handleGradeChange('6B')}
+                style={{
+                  padding: '12px',
+                  borderRadius: 8,
+                  border: '2px solid',
+                  borderColor: selectedGrade === '6B' ? '#2563eb' : '#cbd5e1',
+                  background: selectedGrade === '6B' ? '#eff6ff' : '#ffffff',
+                  color: selectedGrade === '6B' ? '#1d4ed8' : '#475569',
+                  fontWeight: 700,
+                  fontSize: '0.95rem',
+                  cursor: 'pointer'
+                }}
+              >
+                Grado 6°B
+              </button>
+            </div>
+          </div>
+
+          <div style={{ textAlign: 'left' }}>
+            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#334155', marginBottom: 6 }}>
+              2. Selecciona tu Nombre de Estudiante:
             </label>
             <select
-              value={selectedGrade}
-              onChange={(e) => handleGradeChange(e.target.value)}
+              value={selectedStudent}
+              onChange={(e) => setSelectedStudent(e.target.value)}
               style={{
                 width: '100%',
-                padding: '10px 12px',
+                padding: '12px',
                 borderRadius: 8,
                 border: '1px solid #94a3b8',
-                fontSize: '0.92rem',
+                fontSize: '0.95rem',
                 fontWeight: 600,
                 color: '#0f172a',
                 outline: 'none',
@@ -128,57 +149,10 @@ export function LoginScreen({ onStartExam, onOpenAdmin }) {
                 cursor: 'pointer'
               }}
             >
-              {GRADES_OPTIONS.map(g => (
-                <option key={g.value} value={g.value}>{g.label}</option>
+              {currentList.map(name => (
+                <option key={name} value={name}>{name}</option>
               ))}
             </select>
-          </div>
-
-          <div style={{ textAlign: 'left' }}>
-            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#334155', marginBottom: 6 }}>
-              2. Nombre del Estudiante:
-            </label>
-            {!isCustomStudent ? (
-              <select
-                value={selectedStudent}
-                onChange={(e) => setSelectedStudent(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '12px',
-                  borderRadius: 8,
-                  border: '1px solid #94a3b8',
-                  fontSize: '0.95rem',
-                  fontWeight: 600,
-                  color: '#0f172a',
-                  outline: 'none',
-                  backgroundColor: '#f8fafc',
-                  cursor: 'pointer'
-                }}
-              >
-                {currentList.map(name => (
-                  <option key={name} value={name}>{name}</option>
-                ))}
-              </select>
-            ) : (
-              <input
-                type="text"
-                placeholder="Escribe tu nombre completo"
-                value={customStudent}
-                onChange={(e) => setCustomStudent(e.target.value)}
-                required
-                style={{
-                  width: '100%',
-                  padding: '12px',
-                  borderRadius: 8,
-                  border: '1px solid #94a3b8',
-                  fontSize: '0.95rem',
-                  fontWeight: 600,
-                  color: '#0f172a',
-                  outline: 'none',
-                  backgroundColor: '#f8fafc'
-                }}
-              />
-            )}
           </div>
 
           <div style={{

@@ -11,7 +11,11 @@ export function AdminPanel({ isOpen, onClose }) {
   const [selectedSubmission, setSelectedSubmission] = useState(null);
   const [copiedCode, setCopiedCode] = useState(false);
 
-  const GRADES = ['Todos', '6°', '7°', '8°', '9°', '10°', '11°'];
+  const GRADES = [
+    { label: '🏫 Todos los Cursos', value: 'Todos' },
+    { label: 'Grado 6°A', value: '6A' },
+    { label: 'Grado 6°B', value: '6B' }
+  ];
 
   useEffect(() => {
     if (isOpen && isAuthenticated) {
@@ -90,10 +94,10 @@ export function AdminPanel({ isOpen, onClose }) {
             <span style={{ fontSize: '24px' }}>🛡️</span>
             <div>
               <h2 style={{ margin: 0, fontSize: '18px', fontWeight: '600', color: '#f8fafc' }}>
-                Panel de Administración de Exámenes (Turso DB Directo)
+                Panel de Administración de Exámenes (Grado 6°)
               </h2>
               <p style={{ margin: 0, fontSize: '12px', color: '#94a3b8' }}>
-                Respuestas en tiempo real guardadas en la base de datos
+                Respuestas en tiempo real guardadas en Turso DB
               </p>
             </div>
           </div>
@@ -178,26 +182,26 @@ export function AdminPanel({ isOpen, onClose }) {
               flexWrap: 'wrap'
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <span style={{ fontSize: '13px', color: '#94a3b8', fontWeight: '500' }}>Filtrar por Grado:</span>
+                <span style={{ fontSize: '13px', color: '#94a3b8', fontWeight: '500' }}>Filtrar Curso:</span>
                 <div style={{ display: 'flex', gap: '6px' }}>
                   {GRADES.map((g) => (
                     <button
-                      key={g}
-                      onClick={() => setSelectedGrade(g)}
+                      key={g.value}
+                      onClick={() => setSelectedGrade(g.value)}
                       style={{
-                        padding: '6px 12px',
+                        padding: '6px 14px',
                         borderRadius: '6px',
                         border: '1px solid',
-                        borderColor: selectedGrade === g ? '#3b82f6' : '#475569',
-                        backgroundColor: selectedGrade === g ? '#2563eb' : '#0f172a',
+                        borderColor: selectedGrade === g.value ? '#3b82f6' : '#475569',
+                        backgroundColor: selectedGrade === g.value ? '#2563eb' : '#0f172a',
                         color: '#fff',
                         fontSize: '13px',
-                        fontWeight: selectedGrade === g ? '600' : '400',
+                        fontWeight: selectedGrade === g.value ? '600' : '400',
                         cursor: 'pointer',
                         transition: 'all 0.15s'
                       }}
                     >
-                      {g === 'Todos' ? '🏫 Todos los Grados' : `Grado ${g}`}
+                      {g.label}
                     </button>
                   ))}
                 </div>
@@ -238,7 +242,7 @@ export function AdminPanel({ isOpen, onClose }) {
                 ) : submissions.length === 0 ? (
                   <div style={{ textAlign: 'center', padding: '40px', color: '#94a3b8' }}>
                     <span style={{ fontSize: '32px', display: 'block', marginBottom: '8px' }}>📭</span>
-                    No hay respuestas registradas {selectedGrade !== 'Todos' ? `para el Grado ${selectedGrade}` : ''}.
+                    No hay respuestas registradas {selectedGrade !== 'Todos' ? `para Grado ${selectedGrade}` : ''}.
                   </div>
                 ) : (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -273,7 +277,7 @@ export function AdminPanel({ isOpen, onClose }) {
                                 fontSize: '11px',
                                 fontWeight: '600'
                               }}>
-                                Grado {sub.grade}
+                                {sub.grade === '6A' ? 'Grado 6°A' : sub.grade === '6B' ? 'Grado 6°B' : sub.grade}
                               </span>
                             </div>
 
