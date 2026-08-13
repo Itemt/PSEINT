@@ -93,10 +93,14 @@ export function formatUTC5Date(dateString) {
 export async function saveSubmissionDirectly(payload) {
   const { studentName, grade, exerciseId, exerciseTitle, code, results, allPassed, passedCount, totalTests } = payload;
 
-  // 1. Guardar en localStorage para respaldo offline
+  // 1. Guardar en localStorage (remplazando la entrega anterior del mismo estudiante y ejercicio para evitar duplicados)
   try {
     const existingStr = localStorage.getItem('pseint_exam_submissions');
-    const existing = existingStr ? JSON.parse(existingStr) : [];
+    let existing = existingStr ? JSON.parse(existingStr) : [];
+
+    // Filtrar entrega previa del mismo ejercicio y estudiante
+    existing = existing.filter(item => !(item.studentName === studentName && item.exerciseId === exerciseId));
+
     existing.unshift({
       ...payload,
       createdAt: payload.createdAt || new Date().toISOString()
@@ -106,7 +110,7 @@ export async function saveSubmissionDirectly(payload) {
     console.warn('Error al guardar respaldo local:', err);
   }
 
-  // 2. Guardar directamente a la base de datos Turso (movers-exam-itemt)
+  // 2. Guardar directamente a la base de datos Turso (reemplazando cualquier intento previo del mismo ejercicio)
   const db = getTursoClient();
   if (!db) return false;
 
@@ -114,6 +118,13 @@ export async function saveSubmissionDirectly(payload) {
     await initTursoTable();
     const resultsJson = typeof results === 'object' ? JSON.stringify(results) : (results || '[]');
 
+    // Eliminar envío anterior del mismo alumno para el mismo ejercicio
+    await db.execute({
+      sql: `DELETE FROM pseint_submissions WHERE student_name = ? AND exercise_id = ?`,
+      args: [studentName, exerciseId]
+    });
+
+    // Insertar la entrega más reciente
     await db.execute({
       sql: `INSERT INTO pseint_submissions (student_name, grade, exercise_id, exercise_title, code, results, all_passed, passed_count, total_tests, created_at)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)`,
@@ -129,10 +140,10 @@ export async function saveSubmissionDirectly(payload) {
         totalTests || 0
       ]
     });
-    console.log('✅ Entrega registrada correctamente en Turso DB.');
+    console.log('✅ Entrega única registrada/actualizada en Turso DB.');
     return true;
   } catch (err) {
-    console.error('Error al guardar entrega directamente en Turso DB:', err);
+    console.error('Error al guardar entrega en Turso DB:', err);
     return false;
   }
 }
@@ -176,22 +187,7 @@ export async function fetchSubmissionsDirectly(filterGrade = 'Todos') {
       createdAt: row.created_at
     }));
 
-    // Combinar con respaldo local para asegurar 0 pérdidas
-    const localDataStr = localStorage.getItem('pseint_exam_submissions');
-    let localResults = localDataStr ? JSON.parse(localDataStr) : [];
-    if (filterGrade !== 'Todos') {
-      localResults = localResults.filter(s => s.grade === filterGrade);
-    }
-
-    const merged = [...dbSubmissions];
-    for (const loc of localResults) {
-      if (!merged.some(m => (m.id && m.id === loc.id) || (m.studentName === loc.studentName && m.exerciseId === loc.exerciseId && m.createdAt === loc.createdAt))) {
-        merged.push(loc);
-      }
-    }
-
-    merged.sort((a, b) => new Date(b.createdAt || Date.now()) - new Date(a.createdAt || Date.now()));
-    return merged;
+    return dbSubmissions;
   } catch (err) {
     console.error('Error consultando Turso DB directamente:', err);
     const localDataStr = localStorage.getItem('pseint_exam_submissions');
@@ -231,7 +227,8 @@ export async function deleteSubmissionDirectly(id, studentName, exerciseId) {
         sql: `DELETE FROM pseint_submissions WHERE id = ?`,
         args: [id]
       });
-    } else if (studentName && exerciseId) {
+    }
+    if (studentName && exerciseId) {
       await db.execute({
         sql: `DELETE FROM pseint_submissions WHERE student_name = ? AND exercise_id = ?`,
         args: [studentName, exerciseId]
